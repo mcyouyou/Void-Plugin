@@ -11,6 +11,9 @@ class VoidPlugin : JavaPlugin() {
         server.scheduler.runTaskLater(this, Runnable {
             VoidWorldManager.createVoidWorld()
         }, 20L) //Sleep（20 tick）
+        server.scheduler.runTaskLater(this, Runnable {
+            VoidWorldManager.createVoidNetherWorld()
+        }, 20L) //Sleep（20 tick）
         // PlayerJoinListener
         server.pluginManager.registerEvents(PlayerJoinListener(this), this)
         //Command
