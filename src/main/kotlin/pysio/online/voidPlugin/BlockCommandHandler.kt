@@ -1,5 +1,6 @@
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.World
 import org.bukkit.command.Command
 import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
@@ -76,27 +77,33 @@ class CopyBlockCommand(private val plugin: JavaPlugin) : BukkitCommand("copybloc
         val playerLocation = player.location
         val playerChunk = playerLocation.chunk
 
-        val mainWorld = plugin.server.getWorld("world")
-        if (mainWorld == null) {
-            player.sendMessage("主世界未正确加载。")
+        // 根据玩家所在的世界执行不同的逻辑
+        val targetWorldName = when (player.world.environment) {
+            World.Environment.NETHER -> "world_nether"
+            else -> "world"
+        }
+
+        val targetWorld = plugin.server.getWorld(targetWorldName)
+        if (targetWorld == null) {
+            player.sendMessage("目标世界未正确加载。")
             return true
         }
 
-        val mainWorldChunk = mainWorld.getChunkAt(playerLocation)
-        if (!mainWorldChunk.isLoaded) {
-            mainWorldChunk.load()
+        val targetWorldChunk = targetWorld.getChunkAt(playerLocation)
+        if (!targetWorldChunk.isLoaded) {
+            targetWorldChunk.load()
         }
 
         for (x in 0..15) {
             for (z in 0..15) {
-                for (y in 0 until mainWorld.maxHeight) {
-                    val block = mainWorldChunk.getBlock(x, y, z)
+                for (y in 0 until targetWorld.maxHeight) {
+                    val block = targetWorldChunk.getBlock(x, y, z)
                     val targetBlock = playerChunk.getBlock(x, y, z)
                     targetBlock.type = block.type
                 }
             }
         }
-        player.sendMessage("已从主世界拷贝区块到你脚下。")
+        player.sendMessage("已从 $targetWorldName 拷贝区块到你脚下。")
         return true
     }
 }
