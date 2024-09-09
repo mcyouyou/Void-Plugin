@@ -1,0 +1,5 @@
+name: VoidPlugin
+version: '1.0-SNAPSHOT'
+main: pysio.online.voidPlugin.VoidPlugin
+api-version: '1.21'
+load: STARTUP
