@@ -48,10 +48,11 @@ class DeleteBlockCommand(private val plugin: JavaPlugin) : BukkitCommand("delete
 
         val playerLocation = player.location
         val playerChunk = playerLocation.chunk
+        val startY = if (player.world.name == "void_world") -64 else 0
 
         for (x in 0..15) {
             for (z in 0..15) {
-                for (y in 0 until player.world.maxHeight) {
+                for (y in startY until player.world.maxHeight) {
                     val block = playerChunk.getBlock(x, y, z)
                     block.type = Material.AIR
                 }
@@ -96,9 +97,11 @@ class CopyBlockCommand(private val plugin: JavaPlugin) : BukkitCommand("copybloc
             targetWorldChunk.load()
         }
 
+        val startY = if (player.world.name == "void_world") -64 else 0
+
         for (x in 0..15) {
             for (z in 0..15) {
-                for (y in 0 until targetWorld.maxHeight) {
+                for (y in startY until targetWorld.maxHeight) {
                     val block = targetWorldChunk.getBlock(x, y, z)
                     val targetBlock = playerChunk.getBlock(x, y, z)
                     targetBlock.type = block.type
@@ -162,11 +165,14 @@ class ResetBlockCommand(private val plugin: JavaPlugin) : BukkitCommand("resetbl
         val endZ = startZ + 15
         val maxHeight = world.maxHeight
 
+        // 根据世界名称调整 y 坐标的起始值
+        val startY = if (world.name == "void_world") -64 else 0
+
         val dustOptions = Particle.DustOptions(Color.RED, 1.0f)
 
         // 每10个tick生成一次粒子，持续5秒
         val task = Bukkit.getScheduler().runTaskTimer(plugin, Runnable {
-            for (y in 0 until maxHeight step 5) {
+            for (y in startY until maxHeight step 5) {
                 for (x in startX..endX step 1) { // 间隔一格
                     world.spawnParticle(Particle.DUST, x.toDouble(), y.toDouble(), startZ.toDouble(), 1, 0.0, 0.0, 0.0, 0.0, dustOptions)
                     world.spawnParticle(Particle.DUST, x.toDouble(), y.toDouble(), endZ.toDouble(), 1, 0.0, 0.0, 0.0, 0.0, dustOptions)
@@ -185,11 +191,21 @@ class ResetBlockCommand(private val plugin: JavaPlugin) : BukkitCommand("resetbl
     }
 
     private fun clearChunk(chunk: org.bukkit.Chunk) {
-        for (x in 0..15) {
-            for (z in 0..15) {
-                for (y in 0 until chunk.world.maxHeight) {
+        val startX = 0
+        val endX = 15
+        val startZ = 0
+        val endZ = 15
+        val world = chunk.world
+        val maxHeight = world.maxHeight
+
+        // 根据世界名称调整 y 坐标的起始值
+        val startY = if (world.name == "void_world") -64 else 0
+
+        for (x in startX..endX) {
+            for (z in startZ..endZ) {
+                for (y in startY until maxHeight) {
                     val block = chunk.getBlock(x, y, z)
-                    block.type = Material.AIR
+                    block.type = org.bukkit.Material.AIR
                 }
             }
         }
@@ -212,9 +228,11 @@ class ResetBlockCommand(private val plugin: JavaPlugin) : BukkitCommand("resetbl
             targetWorldChunk.load()
         }
 
+        val startY = if (player.world.name == "void_world") -64 else 0
+
         for (x in 0..15) {
             for (z in 0..15) {
-                for (y in 0 until targetWorld.maxHeight) {
+                for (y in startY until targetWorld.maxHeight) {
                     val block = targetWorldChunk.getBlock(x, y, z)
                     val targetBlock = playerChunk.getBlock(x, y, z)
                     targetBlock.type = block.type
