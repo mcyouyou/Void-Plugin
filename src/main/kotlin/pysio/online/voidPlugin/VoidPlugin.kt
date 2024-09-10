@@ -2,6 +2,7 @@ package pysio.online.voidPlugin
 
 import BlockCommandHandler
 import PlayerJoinListener
+import SnowballCommand
 import org.bukkit.plugin.java.JavaPlugin
 
 class VoidPlugin : JavaPlugin() {
@@ -18,6 +19,7 @@ class VoidPlugin : JavaPlugin() {
         server.pluginManager.registerEvents(PlayerJoinListener(this), this)
         //Command
         BlockCommandHandler(this)
+        SnowballCommand(this)
     }
 
     override fun onDisable() {
