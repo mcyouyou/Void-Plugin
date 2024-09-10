@@ -25,6 +25,12 @@ class SnowballCommand(private val plugin: JavaPlugin) : CommandExecutor, Listene
         }
 
         val player = sender as Player
+
+        if (!player.isOp) {
+            player.sendMessage("你没有权限执行此命令。")
+            return true
+        }
+
         giveSpecialSnowballs(player)
         return true
     }

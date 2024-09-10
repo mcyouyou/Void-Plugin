@@ -3,6 +3,7 @@ package pysio.online.voidPlugin
 import BlockCommandHandler
 import PlayerJoinListener
 import SnowballCommand
+import AspectOfTheVoid
 import org.bukkit.plugin.java.JavaPlugin
 
 class VoidPlugin : JavaPlugin() {
@@ -20,6 +21,8 @@ class VoidPlugin : JavaPlugin() {
         //Command
         BlockCommandHandler(this)
         SnowballCommand(this)
+        //Items
+        AspectOfTheVoid(this)
     }
 
     override fun onDisable() {
