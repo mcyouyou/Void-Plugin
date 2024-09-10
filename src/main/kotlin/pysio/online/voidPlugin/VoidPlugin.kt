@@ -23,9 +23,12 @@ class VoidPlugin : JavaPlugin() {
         SnowballCommand(this)
         //Items
         AspectOfTheVoid(this)
+        //EventManager
+        EventManager.getInstance().enable(this)
     }
 
     override fun onDisable() {
-
+        //EventManager
+        EventManager.getInstance().disable()
     }
 }
