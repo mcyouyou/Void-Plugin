@@ -4,6 +4,7 @@ import BlockCommandHandler
 import PlayerJoinListener
 import SnowballCommand
 import AspectOfTheVoid
+import MenuItemInventoryManager
 import org.bukkit.plugin.java.JavaPlugin
 
 class VoidPlugin : JavaPlugin() {
@@ -25,6 +26,8 @@ class VoidPlugin : JavaPlugin() {
         AspectOfTheVoid(this)
         //EventManager
         EventManager.getInstance().enable(this)
+        //Menu
+        MenuItemInventoryManager(this)
     }
 
     override fun onDisable() {
